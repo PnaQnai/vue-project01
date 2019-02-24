@@ -11,36 +11,34 @@
 
     <!-- 六宫格 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
+    <router-link class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" to="/home/newlist"><a href="">
+            <img src="../../images/menu1.png" alt="">
+            <div class="mui-media-body">新闻资讯</div></a>
+    </router-link>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../images/menu1.png" alt="">
-            <div class="mui-media-body">新闻资讯</div></a></li>
-    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../images/menu2.png" alt="">
+            <img src="../../images/menu2.png" alt="">
             <div class="mui-media-body">图片分享</div></a></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../images/menu3.png" alt="">
+            <img src="../../images/menu3.png" alt="">
             <div class="mui-media-body">商品购买</div></a></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../images/menu4.png" alt="">
+            <img src="../../images/menu4.png" alt="">
             <div class="mui-media-body">留言反馈</div></a></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-           <img src="../images/menu5.png" alt="">
+           <img src="../../images/menu5.png" alt="">
             <div class="mui-media-body">视频专区</div></a></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../images/menu6.png" alt="">
+            <img src="../../images/menu6.png" alt="">
             <div class="mui-media-body">联系我们</div></a></li>
 </ul>
   </div>
 </template>
 
 <script>
-import Vue from 'vue';
-//导入vue-resour包
-import VueResource from 'vue-resource'
-Vue.use(VueResource)
 
 //导入toast组件
 import { Toast } from 'mint-ui';
+
 
 //导出数据
 export default {
@@ -54,7 +52,8 @@ export default {
     },
     methods:{
         getData(){
-            this.$http.get('http://www.liulongbin.top:3005/api/getlunbo').then(res=>{
+            //此处不加/
+            this.$http.get('api/getlunbo').then(res=>{
                 // console.log(res.body);
                 if(res.body.status === 0){
                     //成功了

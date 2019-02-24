@@ -42,6 +42,8 @@ export default {};
 <style lang="less" scoped>
 .app-container {
   padding-top: 40px;
+  overflow-x: hidden;
+  padding-bottom: 50px
 }
 
 //过渡效果设置
@@ -55,7 +57,7 @@ export default {};
   position: absolute;
 }
 .v-enter-active,.v-leave-active{
-  transition: all .1s ease;
+  transition: all .2s ease;
 }
 
 </style>
