@@ -1,18 +1,18 @@
 <template>
   <div class="news-container">
       <!-- 头部 -->
-    <div class="news-header" v-for="item in newsDital" :key="item.id">
-      <h1>{{item.title}}</h1>
+    <div class="news-header">
+      <h1>{{newsDital.title}}</h1>
       <p>
-        <span>发表时间:{{item.add_time | momentime('YYYY-MM-DD HH:mm:ss')}}</span>
-        <span>点击：{{item.click}}次</span>
+        <span>发表时间:{{newsDital.add_time | momentime('YYYY-MM-DD HH:mm:ss')}}</span>
+        <span>点击：{{newsDital.click}}次</span>
       </p>
       <hr>
-      <div class="news-content" v-html="item.content"></div>
+      <div class="news-content" v-html="newsDital.content"></div>
     </div>
 
-    <!-- 评论组件 因为多个地方都有评论 所以把评论做成全局组件-->
-    <news-comment></news-comment>
+    <!-- 评论组件 因为多个地方都有评论 所以把评论做成全局组件  因为子组件需要用到文章id  所以父向子传值-->
+    <news-comment :id="this.id"></news-comment>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
         if (res.body.status === 0) {
           //成功了
         //   console.log(res.body);
-          this.newsDital = res.body.message;
+          this.newsDital = res.body.message[0];
         } else {
           //失败了  提示信息
           Toast("新闻详情内容获取失败!!");

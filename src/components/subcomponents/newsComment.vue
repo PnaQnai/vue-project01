@@ -2,52 +2,87 @@
   <div class="news-comments">
     <h1>发表评论</h1>
     <hr>
-    <textarea placeholder="请输入评论内容(最多吐槽120字)" maxlength="120" v-model="content"></textarea>
+    <textarea placeholder="请输入评论内容(最多吐槽120字)" maxlength="120" v-model="msg"></textarea>
     <button @click="submComment">发表评论</button>
-    <div class="commentList" v-for="item in newsComment" :key="item.id">
+    <div class="commentList" v-for="(item,index) in newsComment" :key="item.id">
       <div
         class="commentHeader"
-      >第1楼&nbsp;&nbsp;用户:{{item.user_name}}&nbsp;&nbsp;发表时间:{{item.add_time | momentime('YYYY-MM-DD HH:mm:ss')}}</div>
+      >第{{index+1}}楼&nbsp;&nbsp;用户:{{item.user_name}}&nbsp;&nbsp;发表时间:{{item.add_time | momentime('YYYY-MM-DD HH:mm:ss')}}</div>
       <div class="commentContent" v-html="item.content"></div>
     </div>
-    <button class="loadMore">加载更多</button>
+    <button class="loadMore" @click="getMore">加载更多</button>
   </div>
 </template>
 
 <script>
+//导入toast组件
+import { Toast } from 'mint-ui';
+
 export default {
   data() {
     return {
-      newsComment: [],
-      id: this.$route.params.id,
-      content:content
+      newsComment: [],  //用于存储从后台获取的评论内容
+      pageindex:1,  //默认在第一页
+      msg:''
     };
   },
   created() {
     this.displayComment();
   },
   methods: {
+    //展示评论内容
     displayComment() {
       this.$http
-        .get("api/getcomments/" + this.id + "?pageindex=1")
+        .get("api/getcomments/" + this.id + "?pageindex="+this.pageindex)
         .then(res => {
-          console.log(res.body);
+          // console.log(res.body);
           if (res.body.status === 0) {
-            this.newsComment = res.body.message;
+            this.newsComment = this.newsComment.concat(res.body.message);
           } else {
+            //失败了  提示信息
+            Toast('评论列表获取失败！！！');
           }
         });
     },
+    //获取更多
+    getMore(){
+      //页数增加
+        this.pageindex ++;
+        this.displayComment();
+    },
+    //提交评论
     submComment(){
         //未完成
-        console.log(this.newsComment)
-        console.log(this.content);
+        // console.log(this.id)
+        // console.log(this.content);
+        //评论内容验证
+        if(this.msg.trim() === ""){
+          Toast('请输入合法的评论内容！');
+          return 
+        }
         
-        this.$http.post('api/postcomment/'+this.id,{artid:this.id,content:this.content}).then(res=>{
-            console.log(res.body);
+        this.$http.post('api/postcomment/'+this.id,{content:this.msg}).then(res=>{
+          // console.log(res.body.status)
+            if(res.body.status === 0){
+              //自定义数组内容 插入到数组的最前端
+              // this.displayComment();
+              var cmt = {
+                user_name:'匿名用户',
+                add_time:new Date(),
+                content:this.msg
+              }
+              // console.log(this);
+              //  this.displayComment();
+              //v-for会自动监听数组的变化
+              this.newsComment.unshift(cmt);
+              this.msg = '';
+            }else{
+              Toast('评论失败！！！');
+            }
         })
     }
-  }
+  },
+  props:['id']
 };
 </script>
 

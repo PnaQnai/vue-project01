@@ -1,13 +1,7 @@
 <template>
   <div>
-    <!-- 轮播图 -->
-    <mt-swipe :auto="4000">
-      <mt-swipe-item v-for="item in dataList" :key="item.url">
-          <!-- 只有v-bind才区分字符串和变量 -->
-          <img :src="item.img" alt="">
-      </mt-swipe-item>
-
-    </mt-swipe>
+    <!-- 轮播图  父组件向子组件进行传值 -->
+    <swiper :lunbotu="dataList" :isFull="true"></swiper>
 
     <!-- 六宫格 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
@@ -15,12 +9,12 @@
             <img src="../../images/menu1.png" alt="">
             <div class="mui-media-body">新闻资讯</div></a>
     </router-link>
-    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+    <router-link class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" to="/home/photolist"><a href="#">
             <img src="../../images/menu2.png" alt="">
-            <div class="mui-media-body">图片分享</div></a></li>
-    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+            <div class="mui-media-body">图片分享</div></a></router-link>
+    <router-link class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" to="/home/goodsbuy"><a href="#">
             <img src="../../images/menu3.png" alt="">
-            <div class="mui-media-body">商品购买</div></a></li>
+            <div class="mui-media-body">商品购买</div></a></router-link>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
             <img src="../../images/menu4.png" alt="">
             <div class="mui-media-body">留言反馈</div></a></li>
@@ -39,6 +33,8 @@
 //导入toast组件
 import { Toast } from 'mint-ui';
 
+//导入轮播图组件
+import swiper from '../subcomponents/swiper.vue'
 
 //导出数据
 export default {
@@ -64,20 +60,15 @@ export default {
                 }
             })
         }
-    }
+    },
+    components:{
+        swiper
+    },
+    
 };
 </script>
 
 <style lang="less" scoped>
-//轮播图样式
-.mint-swipe{
-    height: 260px;
-    img{
-        width: 100%;
-        height: 260px;
-    }
-}
-
 .mui-table-view,.mui-grid-view,.mui-grid-9{
     background-color: #fff;
     border: none;
